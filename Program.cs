@@ -6,26 +6,6 @@ using System.Text;
 struct MainData { public string protein; public string organism; public string aminoAcid; }
 class Program
 {
-    static void Main(string[] args)
-    {
-        string sequenceFile = "sequences.1.txt";
-        string commandFile = "commands.1.txt";
-        string outputFile = "genedata.1.txt";
-        
-    using (StreamWriter writer = InitializeProcessing(sequenceFile, commandFile, outputFile, out List<MainData> geneticDataList))
-        {
-            if (writer == null) return;
-
-            writer.WriteLine("Святой Лука");
-            writer.WriteLine("Генетический поиск");
-
-            // метода для чтения и выполнения команд
-            ExecuteCommands(commandFile, geneticDataList, writer);
-        }
-
-        Console.WriteLine($"Обработка завершена. Результаты сохранены в {outputFile}");
-    }
-
     // проверка на наличие
     static StreamWriter InitializeProcessing(string sequenceFile, string commandFile, string outputFile, out List<MainData> geneticDataList)
     {
@@ -45,77 +25,7 @@ class Program
 
         return new StreamWriter(outputFile, false, Encoding.UTF8);
     }
-
-    
-    static void ExecuteCommands(string commandFile, List<MainData> geneticDataList, StreamWriter writer)
-    {
-        string[] commandLines = File.ReadAllLines(commandFile);
-        int operationNumber = 1;
-
-        for (int i = 0; i < commandLines.Length; i++)
-        {
-            string line = commandLines[i];
-            if (string.IsNullOrWhiteSpace(line)) continue;
-
-            string[] parts = line.Split('\t');
-            string command = parts[0].Trim();
-
-            switch (command)
-            {
-                case "search":
-                    if (parts.Length >= 2)
-                    {
-                        ProcessSearch(operationNumber, parts[1].Trim(), geneticDataList, writer);
-                    }
-                    break;
-
-                case "diff":
-                    if (parts.Length >= 3)
-                    {
-                        ProcessDiff(operationNumber, parts[1].Trim(), parts[2].Trim(), geneticDataList, writer);
-                    }
-                    break;
-
-                case "mode":
-                    if (parts.Length >= 2)
-                    {
-                        ProcessMode(operationNumber, parts[1].Trim(), geneticDataList, writer);
-                    }
-                    break;
-            }
-
-            operationNumber++;
-        }
-    }
-
-    static string Decoding(string amino_acids)
-    {
-        if (string.IsNullOrEmpty(amino_acids)) return amino_acids;
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < amino_acids.Length; i++)
-        {
-            char c = amino_acids[i];
-
-            if (char.IsDigit(c))
-            {
-                int count = c - '0';
-                if (i + 1 < amino_acids.Length)
-                {
-                    char nextChar = amino_acids[i + 1];
-                    sb.Append(nextChar, count);
-                    i++;
-                }
-            }
-            else
-            {
-                sb.Append(c);
-            }
-        }
-        return sb.ToString();
-    }
-
-// загрузка данных
+    // загрузка данных
     static List<MainData> LoadMainData(string filePath)
     {
         List<MainData> list = new List<MainData>();
@@ -141,6 +51,7 @@ class Program
         }
         return list;
     }
+
     // ищет заданный фрагмент кислоты
     static void ProcessSearch(int opNum, string rawPattern, List<MainData> dataList, StreamWriter writer)
     {
