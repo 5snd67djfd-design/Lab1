@@ -8,10 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="commands.txt">
+    <None Update="commands.1.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="sequences.txt">
+    <None Update="genedata.1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="sequences.1.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
